@@ -23,8 +23,17 @@ import "github.com/notfrancois/omp-streamer/pkg/game"
 
 type API struct {
 	Player *game.Player
+	Test   string
 }
 
 func NewServerAPI(player *game.Player) *API {
 	return &API{Player: player}
+}
+
+func (a *API) GetPlayer() *game.Player {
+	return a.Player
+}
+
+func (a *API) GetTest() string {
+	return a.Test
 }

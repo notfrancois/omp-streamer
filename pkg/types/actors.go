@@ -20,3 +20,29 @@
 package types
 
 type ActorID int32
+
+type ActorAnimation struct {
+	delta   float32
+	freeze  bool
+	library string
+	loop    bool
+	name    string
+}
+
+type Actor struct {
+	id                               ActorID
+	sharedCell                       Cell
+	comparableStreamDistance         float32
+	health                           float32
+	inverseAreaChecking              bool
+	invulnerable                     bool
+	modelid                          int32
+	originalComparableStreamDistance float32
+	position                         Vector3
+	offset                           Vector3
+	priority                         int32
+	references                       int32
+	rotation                         float32
+	streamDistance                   float32
+	animation                        ActorAnimation
+}

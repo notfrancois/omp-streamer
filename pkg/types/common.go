@@ -19,10 +19,6 @@
  */
 package types
 
-import (
-	"fmt"
-)
-
 type StreamerType int32
 
 const (
@@ -62,19 +58,15 @@ const (
 	StreamerStaticDistanceCutoff float32 = 0.0
 )
 
-// CellID represents a unique identifier for a cell
-type CellID struct {
-	X, Y int32
-}
-
-// Hash implements a hash for CellID
-func (c CellID) Hash() string {
-	return fmt.Sprintf("%d:%d", c.X, c.Y)
+type AreaPosition interface {
+	Contains(pos Vector3) bool
+	GetBounds() Box2D
+	GetCenter() Vector2
 }
 
 // Box2D represents a 2D box
 type Box2D struct {
-	Min, Max Vector2
+	Min, Max *Vector2
 }
 
 // Box3D represents a 3D box
@@ -83,12 +75,14 @@ type Box3D struct {
 }
 
 // Vector2 represents a 2D vector
-type Vector2 interface {
-	X() float32
-	Y() float32
+type Vector2 struct {
+	X, Y float32
 }
 
 // Polygon2D represents a 2D polygon
 type Polygon2D struct {
 	Points []Vector2
 }
+
+type Point2DPosition Vector2
+type Point3DPosition Vector3

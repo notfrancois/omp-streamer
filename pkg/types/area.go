@@ -20,3 +20,18 @@
 package types
 
 type AreaID int32
+
+type Area struct {
+	ID             AreaID
+	ComparableSize float32
+	Height         Vector2
+	Priority       int32
+	References     int32
+	Size           float32
+	SpectateMode   bool
+	StreamDistance float32
+}
+
+func (a *Area) GetID() int32 {
+	return int32(a.ID)
+}

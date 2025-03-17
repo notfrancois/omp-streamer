@@ -19,3 +19,22 @@
  */
 
 package streamer
+
+// Streamer implementa la lógica principal de streaming
+type Streamer struct {
+	core               *Core
+	tickRate           int
+	tickCount          int
+	lastUpdateTime     float32
+	streamInCallbacks  []StreamCallback
+	streamOutCallbacks []StreamCallback
+}
+
+// NewStreamer crea un nuevo sistema de streaming
+func NewStreamer(core *Core) *Streamer {
+	return &Streamer{
+		core:      core,
+		tickRate:  50, // Valor por defecto
+		tickCount: 0,
+	}
+}

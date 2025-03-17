@@ -192,8 +192,26 @@ func (c *ChunkStreamer) StreamMapIcons(player *Player, automatic bool) {
 	// Limpiar estructuras si no hay más íconos por procesar
 	if player.DiscoveredMapIcons.IsEmpty() && len(player.RemovedMapIcons) == 0 {
 		player.ExistingMapIcons.Clear()
-		player.ProcessingChunks.Reset()
+		player.ProcessingChunks.Reset(StreamerTypeMapIcon)
 	}
 }
 
-// Otras funciones del ChunkStreamer serían similares para objetos y etiquetas de texto
+func (c *ChunkStreamer) PerformPlayerChunkUpdate(player *Player, automatic bool) {
+	// Iterar por tipos según prioridad definida en core
+	for _, itemType := range c.core.Data.TypePriority {
+		switch itemType {
+		case StreamerTypeObject:
+			if player.ProcessingChunks.IsActive(StreamerTypeObject) {
+				c.StreamObjects(player, automatic)
+			}
+		case StreamerTypeMapIcon:
+			if player.ProcessingChunks.IsActive(StreamerTypeMapIcon) {
+				c.StreamMapIcons(player, automatic)
+			}
+		case StreamerType3DTextLabel:
+			if player.ProcessingChunks.IsActive(StreamerType3DTextLabel) {
+				c.StreamTextLabels(player, automatic)
+			}
+		}
+	}
+}

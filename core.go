@@ -60,39 +60,3 @@ func NewStreamerData() *StreamerData {
 
 	return sd
 }
-
-// Grid implementa un sistema de cuadrícula espacial para particionamiento eficiente
-type Grid struct {
-	core     *Core
-	cellSize float32
-	cells    map[CellID]*Cell
-	mu       sync.RWMutex
-}
-
-// NewGrid crea una nueva cuadrícula espacial
-func NewGrid(core *Core) *Grid {
-	return &Grid{
-		core:     core,
-		cellSize: 300.0, // Valor por defecto
-		cells:    make(map[CellID]*Cell),
-	}
-}
-
-// Streamer implementa la lógica principal de streaming
-type Streamer struct {
-	core               *Core
-	tickRate           int
-	tickCount          int
-	lastUpdateTime     float32
-	streamInCallbacks  []StreamCallback
-	streamOutCallbacks []StreamCallback
-}
-
-// NewStreamer crea un nuevo sistema de streaming
-func NewStreamer(core *Core) *Streamer {
-	return &Streamer{
-		core:      core,
-		tickRate:  50, // Valor por defecto
-		tickCount: 0,
-	}
-}

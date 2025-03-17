@@ -12,6 +12,10 @@ type Bitset struct {
 	bits uint64
 }
 
+func (b *Bitset) IsActive(index int) bool {
+	return b.IsSet(index)
+}
+
 // IsEmpty verifica si todos los bits están en 0
 func (b *Bitset) IsEmpty() bool {
 	return b.bits == 0
@@ -31,8 +35,19 @@ func (b *Bitset) ResetBit(index int) {
 	}
 }
 
-// Reset establece todos los bits en 0
-func (b *Bitset) Reset() {
+// Reset restablece un bit específico o todos los bits si no se proporciona un índice
+func (b *Bitset) Reset(index ...int) {
+	if len(index) > 0 && index[0] >= 0 && index[0] < 64 {
+		// Si se proporciona un índice, resetear solo ese bit
+		b.ResetBit(index[0])
+	} else {
+		// Si no se proporciona índice, resetear todos los bits
+		b.bits = 0
+	}
+}
+
+// ResetAll establece todos los bits en 0
+func (b *Bitset) ResetAll() {
 	b.bits = 0
 }
 

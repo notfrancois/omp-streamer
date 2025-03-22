@@ -1,3 +1,3 @@
-module github.com/notfrancois/go-streamer
+module github.com/notfrancois/omp-streamer
 
 go 1.23.3

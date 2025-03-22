@@ -1,3 +1,3 @@
 [submodule "modules/streamer"]
 	path = modules/streamer
-	url = git@github.com:samp-incognito/samp-streamer-plugin.git
+	url = git@github.com:notfrancois/samp-streamer-plugin.git

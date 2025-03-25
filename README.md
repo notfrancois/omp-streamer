@@ -1,2 +1,3 @@
-# streamer-go
-Like SA:MP Streamer Plugin but for Go with new open.mp API.
+# Streamer Go
+
+Wrapper around all current SA:MP Streamer plugin functionality.

@@ -67,7 +67,8 @@ typedef struct {
 extern "C" {
 #endif
 
-
+    void loadComponent();
+    void unloadComponent();
     void* findFunc(const char* name);
 
 #ifdef __cplusplus

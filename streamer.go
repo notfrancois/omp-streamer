@@ -1,7 +1,6 @@
 package streamer
 
 // #cgo CFLAGS: -Iinclude
-// #cgo LDFLAGS: -L. -lstreamer
 // #include "streamer.h"
 import "C"
 

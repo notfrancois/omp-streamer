@@ -67,9 +67,12 @@ typedef struct {
 extern "C" {
 #endif
 
-    void loadComponent();
-    void unloadComponent();
-    void* findFunc(const char* name);
+    #ifndef OMP_FUNCTIONS_DEFINED
+    #define OMP_FUNCTIONS_DEFINED
+    inline void loadComponent();
+    inline void unloadComponent();
+    inline void* findFunc(const char* name);
+    #endif
 
 #ifdef __cplusplus
 }
@@ -77,8 +80,11 @@ extern "C" {
 #include <string>
 #include <unordered_map>
 
+#ifndef OMP_VARIABLES_DEFINED
+#define OMP_VARIABLES_DEFINED
 extern void* libHandle;
 extern std::unordered_map<std::string, void*> funcs;
+#endif
 
 template <typename R, typename... Args>
 R call(const std::string& funcName, Args... args)

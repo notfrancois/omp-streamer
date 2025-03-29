@@ -33,44 +33,15 @@ typedef struct {
     float y;
 } Vector2;
 
-typedef struct {
-    int primary;
-    int secondary;
-} VehicleColour;
-
-typedef struct {
-    int model;
-    int bone;
-    Vector3 offset;
-    Vector3 rotation;
-    Vector3 scale;
-    uint32_t colour1;
-    uint32_t colour2;
-} PlayerAttachedObject;
-
-typedef struct {
-	Vector3 origin;
-	Vector3 hitPos;
-	Vector3 offset;
-	uint8_t weapon;
-	uint8_t hitType;
-	uint16_t hitID;
-} PlayerBulletData;
-
-typedef struct {
-	uint8_t seat;
-	Vector3 position;
-	Vector3 velocity;
-} UnoccupiedVehicleUpdate;
-
 #ifdef __cplusplus
 extern "C" {
 #endif
 
     #ifndef OMP_FUNCTIONS_DEFINED
     #define OMP_FUNCTIONS_DEFINED
-    inline void loadComponent();
-    inline void unloadComponent();
+    void loadSdk();
+    void unloadSdk();
+
     inline void* findFunc(const char* name);
     #endif
 

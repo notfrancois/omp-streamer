@@ -29,7 +29,7 @@ extern "C" {
 #endif
     }
 
-    void loadComponent() {
+    void loadSdk() {
         // Check if component is already loaded in this module
         if (libHandle != nullptr) {
             return; // Component already loaded in this module
@@ -66,7 +66,7 @@ extern "C" {
 #endif
     }
 
-    void unloadComponent() {
+    void unloadSdk() {
         if (libHandle == nullptr) {
             return;
         }

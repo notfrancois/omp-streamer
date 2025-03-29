@@ -19,20 +19,20 @@ func handlePanic() {
 	}
 }
 
-//export onGameModeInit
-func onGameModeInit() C.bool {
+//export OnGmInit
+func OnGmInit() C.bool {
 	defer handlePanic()
 
-	C.loadComponent()
+	C.loadSdk()
 
 	return true
 }
 
-//export onGameModeExit
-func onGameModeExit() C.bool {
+//export OnGmExit
+func OnGmExit() C.bool {
 	defer handlePanic()
 
-	C.unloadComponent()
+	C.unloadSdk()
 
 	return true
 }

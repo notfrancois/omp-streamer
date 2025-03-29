@@ -8,8 +8,22 @@
 #include <iostream>
 #include <string>
 
-void* libHandle = nullptr;
-std::unordered_map<std::string, void*> funcs;
+static void* libHandle = nullptr;
+static std::unordered_map<std::string, void*> funcs;
+
+namespace omp_internal {
+    void* getLibHandle() {
+        return libHandle;
+    }
+
+    void setLibHandle(void* handle) {
+        libHandle = handle;
+    }
+
+    std::unordered_map<std::string, void*>& getFuncs() {
+        return funcs;
+    }
+}
 
 extern "C" {
     bool isLibraryAlreadyLoaded() {
@@ -30,14 +44,11 @@ extern "C" {
     }
 
     void loadSdk() {
-        // Check if component is already loaded in this module
         if (libHandle != nullptr) {
-            return; // Component already loaded in this module
+            return;
         }
 
-        // Check if component is already loaded by another module
         if (isLibraryAlreadyLoaded()) {
-            // If already loaded, just get a handle to it
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__)
             libHandle = GetModuleHandle("Go.dll");
             if (libHandle == nullptr) {

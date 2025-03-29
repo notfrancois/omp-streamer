@@ -42,7 +42,7 @@ extern "C" {
     void loadSdk();
     void unloadSdk();
 
-    inline void* findFunc(const char* name);
+    void* findFunc(const char* name);
     #endif
 
 #ifdef __cplusplus
@@ -51,32 +51,27 @@ extern "C" {
 #include <string>
 #include <unordered_map>
 
-#ifndef OMP_VARIABLES_DEFINED
-#define OMP_VARIABLES_DEFINED
-extern void* libHandle;
-extern std::unordered_map<std::string, void*> funcs;
-#endif
+namespace omp_internal {
+    void* getLibHandle();
+    void setLibHandle(void* handle);
+    std::unordered_map<std::string, void*>& getFuncs();
+}
 
 template <typename R, typename... Args>
 R call(const std::string& funcName, Args... args)
 {
-    auto it = funcs.find(funcName);
+    auto& funcsMap = omp_internal::getFuncs();
+    auto it = funcsMap.find(funcName);
     void* funcAddr = nullptr;
 
-    if (it == funcs.end()) {
+    if (it == funcsMap.end()) {
         funcAddr = findFunc(funcName.c_str());
-        funcs.emplace(funcName, funcAddr);
+        funcsMap.emplace(funcName, funcAddr);
     } else {
         funcAddr = it->second;
     }
 
-    // R ret;
-    // if funcAddr == nullptr {
-    //     return ret;
-    // }
-
     typedef R (* FuncType)(Args...);
-
     FuncType func = (FuncType)funcAddr;
 
     return (*func)(std::forward<Args>(args)...);

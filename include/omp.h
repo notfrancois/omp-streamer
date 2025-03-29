@@ -42,6 +42,7 @@ extern "C" {
     void loadSdk();
     void unloadSdk();
 
+    // Declaración de findFunc como una función normal C
     void* findFunc(const char* name);
     #endif
 
@@ -55,6 +56,9 @@ namespace omp_internal {
     void* getLibHandle();
     void setLibHandle(void* handle);
     std::unordered_map<std::string, void*>& getFuncs();
+    
+    // Incluimos la función interna aquí
+    void* findFuncInternal(const char* name);
 }
 
 template <typename R, typename... Args>
@@ -65,7 +69,8 @@ R call(const std::string& funcName, Args... args)
     void* funcAddr = nullptr;
 
     if (it == funcsMap.end()) {
-        funcAddr = findFunc(funcName.c_str());
+        // Usamos la función interna
+        funcAddr = omp_internal::findFuncInternal(funcName.c_str());
         funcsMap.emplace(funcName, funcAddr);
     } else {
         funcAddr = it->second;

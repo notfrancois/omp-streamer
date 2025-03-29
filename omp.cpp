@@ -23,6 +23,40 @@ namespace omp_internal {
     std::unordered_map<std::string, void*>& getFuncs() {
         return funcs;
     }
+    
+    void* findFuncInternal(const char* name) {
+        if (libHandle == nullptr) {
+            std::cerr << "Cannot find function. Library not loaded." << std::endl;
+            return nullptr;
+        }
+        
+        // Check if we've already looked up this function
+        std::string funcName(name);
+        auto it = funcs.find(funcName);
+        if (it != funcs.end()) {
+            return it->second;
+        }
+        
+        // Look up the function and cache it
+        void* funcPtr = nullptr;
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__)
+        funcPtr = (void*)GetProcAddress((HMODULE)libHandle, name);
+#else
+        funcPtr = dlsym(libHandle, name);
+#endif
+        
+        if (funcPtr != nullptr) {
+            funcs[funcName] = funcPtr;
+        } else {
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__)
+            std::cerr << "Failed to find function " << name << ". Error code: " << GetLastError() << std::endl;
+#else
+            std::cerr << "Failed to find function " << name << ": " << dlerror() << std::endl;
+#endif
+        }
+        
+        return funcPtr;
+    }
 }
 
 extern "C" {
@@ -93,37 +127,8 @@ extern "C" {
         libHandle = nullptr;
     }
 
+    // Función wrapper para la versión C
     void* findFunc(const char* name) {
-        if (libHandle == nullptr) {
-            std::cerr << "Cannot find function. Library not loaded." << std::endl;
-            return nullptr;
-        }
-        
-        // Check if we've already looked up this function
-        std::string funcName(name);
-        auto it = funcs.find(funcName);
-        if (it != funcs.end()) {
-            return it->second;
-        }
-        
-        // Look up the function and cache it
-        void* funcPtr = nullptr;
-#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__)
-        funcPtr = (void*)GetProcAddress((HMODULE)libHandle, name);
-#else
-        funcPtr = dlsym(libHandle, name);
-#endif
-        
-        if (funcPtr != nullptr) {
-            funcs[funcName] = funcPtr;
-        } else {
-#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__)
-            std::cerr << "Failed to find function " << name << ". Error code: " << GetLastError() << std::endl;
-#else
-            std::cerr << "Failed to find function " << name << ": " << dlerror() << std::endl;
-#endif
-        }
-        
-        return funcPtr;
+        return omp_internal::findFuncInternal(name);
     }
 }

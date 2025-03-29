@@ -34,6 +34,9 @@ typedef struct {
 } Vector2;
 
 #ifdef __cplusplus
+namespace omp_internal {
+    void* findFuncInternal(const char* name);
+}
 extern "C" {
 #endif
 
@@ -63,8 +66,8 @@ namespace omp_internal {
     void setLibHandle(void* handle);
     std::unordered_map<std::string, void*>& getFuncs();
     
-    // Incluimos la función interna aquí
-    void* findFuncInternal(const char* name);
+    // La implementación se hace en el archivo .cpp
+    // void* findFuncInternal(const char* name);  // Ya declarada arriba
 }
 
 template <typename R, typename... Args>
@@ -75,7 +78,6 @@ R call(const std::string& funcName, Args... args)
     void* funcAddr = nullptr;
 
     if (it == funcsMap.end()) {
-        // Usamos la función interna
         funcAddr = omp_internal::findFuncInternal(funcName.c_str());
         funcsMap.emplace(funcName, funcAddr);
     } else {

@@ -1,6 +1,8 @@
 package streamer
 
-// #include "include/streamer.h"
+// #cgo CFLAGS: -Iinclude
+// #cgo LDFLAGS: -L. -lstreamer
+// #include "streamer.h"
 import "C"
 
 func CreateDynamicObject(modelid int, x float32, y float32, z float32, rx float32, ry float32, rz float32, worldid int, interiorid int, playerid int) int {

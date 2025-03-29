@@ -42,8 +42,14 @@ extern "C" {
     void loadSdk();
     void unloadSdk();
 
-    // Declaración de findFunc como una función normal C
+    
+    #ifdef __cplusplus
+    static inline void* findFunc(const char* name) {
+        return omp_internal::findFuncInternal(name);
+    }
+    #else
     void* findFunc(const char* name);
+    #endif
     #endif
 
 #ifdef __cplusplus

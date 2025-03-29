@@ -126,9 +126,4 @@ extern "C" {
 #endif
         libHandle = nullptr;
     }
-
-    // Función wrapper para la versión C
-    void* findFunc(const char* name) {
-        return omp_internal::findFuncInternal(name);
-    }
 }
